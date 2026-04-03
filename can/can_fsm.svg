@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="440" viewBox="0 0 1120 440">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f2937"/>
+    </marker>
+    <style>
+      .title { font: 700 26px Arial, sans-serif; fill: #111827; }
+      .label { font: 600 16px Arial, sans-serif; fill: #111827; }
+      .body { font: 14px Arial, sans-serif; fill: #374151; }
+      .box { fill: #f8fafc; stroke: #dc2626; stroke-width: 2.5; rx: 18; ry: 18; }
+      .line { stroke: #1f2937; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #1f2937; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .note { font: 13px Arial, sans-serif; fill: #4b5563; }
+    </style>
+  </defs>
+
+  <text x="40" y="42" class="title">CAN Standard Frame TX/RX FSM</text>
+
+  <rect x="40" y="120" width="150" height="92" class="box"/>
+  <text x="88" y="152" class="label">IDLE</text>
+  <text x="72" y="178" class="body">Wait for SOF or</text>
+  <text x="74" y="198" class="body">transmit request</text>
+
+  <rect x="230" y="120" width="180" height="92" class="box"/>
+  <text x="286" y="152" class="label">CORE</text>
+  <text x="258" y="178" class="body">SOF, identifier,</text>
+  <text x="254" y="198" class="body">control, data, CRC</text>
+
+  <rect x="450" y="120" width="170" height="92" class="box"/>
+  <text x="490" y="152" class="label">ACK_SLOT</text>
+  <text x="474" y="178" class="body">TX samples ACK</text>
+  <text x="470" y="198" class="body">RX may drive dominant</text>
+
+  <rect x="660" y="120" width="180" height="92" class="box"/>
+  <text x="694" y="152" class="label">ACK_DELIM</text>
+  <text x="690" y="178" class="body">Recessive delimiter</text>
+  <text x="680" y="198" class="body">form check in receiver</text>
+
+  <rect x="880" y="120" width="120" height="92" class="box"/>
+  <text x="922" y="152" class="label">EOF</text>
+  <text x="904" y="178" class="body">7 recessive</text>
+  <text x="913" y="198" class="body">bits</text>
+
+  <rect x="500" y="290" width="120" height="92" class="box"/>
+  <text x="540" y="322" class="label">IFS</text>
+  <text x="520" y="348" class="body">3-bit intermission</text>
+
+  <path d="M190 166 L230 166" class="line"/>
+  <text x="196" y="156" class="note">SOF/start</text>
+
+  <path d="M410 166 L450 166" class="line"/>
+  <text x="420" y="156" class="note">core complete</text>
+
+  <path d="M620 166 L660 166" class="line"/>
+  <path d="M840 166 L880 166" class="line"/>
+  <path d="M940 212 L940 260 L620 260 L620 290" class="line"/>
+  <path d="M500 336 L170 336 L170 212" class="line"/>
+
+  <path d="M320 212 L320 272 L320 212" class="loop"/>
+  <text x="338" y="274" class="note">TX inserts stuff bits, RX removes them</text>
+
+  <path d="M270 120 L270 78 L118 78 L118 120" class="loop"/>
+  <text x="132" y="70" class="note">arbitration lost returns TX to idle</text>
+
+  <rect x="710" y="290" width="300" height="78" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5" rx="14" ry="14"/>
+  <text x="730" y="318" class="body">TX FSM states: IDLE, CORE, ACK_SLOT, ACK_DELIM, EOF, IFS</text>
+  <text x="730" y="340" class="body">RX FSM uses the same high-level progression, with CRC, stuff, and form checks.</text>
+</svg>

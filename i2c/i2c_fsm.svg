@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f2937"/>
+    </marker>
+    <style>
+      .title { font: 700 26px Arial, sans-serif; fill: #111827; }
+      .label { font: 600 15px Arial, sans-serif; fill: #111827; }
+      .body { font: 13px Arial, sans-serif; fill: #374151; }
+      .box { fill: #f8fafc; stroke: #7c3aed; stroke-width: 2.3; rx: 16; ry: 16; }
+      .line { stroke: #1f2937; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .note { font: 12px Arial, sans-serif; fill: #4b5563; }
+    </style>
+  </defs>
+
+  <text x="40" y="42" class="title">I2C Write Master ASM Chart</text>
+
+  <rect x="50" y="90" width="130" height="72" class="box"/>
+  <text x="88" y="120" class="label">IDLE</text>
+  <text x="74" y="142" class="body">wait for start</text>
+
+  <rect x="220" y="90" width="130" height="72" class="box"/>
+  <text x="244" y="120" class="label">START_A</text>
+  <text x="238" y="142" class="body">bus setup</text>
+
+  <rect x="390" y="90" width="130" height="72" class="box"/>
+  <text x="414" y="120" class="label">START_B</text>
+  <text x="405" y="142" class="body">generate START</text>
+
+  <rect x="560" y="90" width="140" height="72" class="box"/>
+  <text x="580" y="120" class="label">BIT_SETUP</text>
+  <text x="576" y="142" class="body">drive next bit</text>
+
+  <rect x="740" y="90" width="130" height="72" class="box"/>
+  <text x="768" y="120" class="label">BIT_HIGH</text>
+  <text x="762" y="142" class="body">SCL high</text>
+
+  <rect x="910" y="90" width="130" height="72" class="box"/>
+  <text x="942" y="120" class="label">BIT_LOW</text>
+  <text x="930" y="142" class="body">count bits</text>
+
+  <rect x="220" y="260" width="140" height="72" class="box"/>
+  <text x="236" y="290" class="label">ACK_SETUP</text>
+  <text x="238" y="312" class="body">release SDA</text>
+
+  <rect x="410" y="260" width="130" height="72" class="box"/>
+  <text x="440" y="290" class="label">ACK_HIGH</text>
+  <text x="428" y="312" class="body">sample ACK</text>
+
+  <rect x="590" y="260" width="130" height="72" class="box"/>
+  <text x="622" y="290" class="label">ACK_LOW</text>
+  <text x="610" y="312" class="body">decide next</text>
+
+  <rect x="770" y="260" width="130" height="72" class="box"/>
+  <text x="800" y="290" class="label">STOP_A</text>
+  <text x="790" y="312" class="body">prepare STOP</text>
+
+  <rect x="950" y="260" width="130" height="72" class="box"/>
+  <text x="980" y="290" class="label">STOP_B</text>
+  <text x="973" y="312" class="body">release bus</text>
+
+  <rect x="1040" y="400" width="110" height="60" class="box"/>
+  <text x="1068" y="430" class="label">DONE</text>
+  <text x="1056" y="450" class="body">pulse done</text>
+
+  <path d="M180 126 L220 126" class="line"/>
+  <path d="M350 126 L390 126" class="line"/>
+  <path d="M520 126 L560 126" class="line"/>
+  <path d="M700 126 L740 126" class="line"/>
+  <path d="M870 126 L910 126" class="line"/>
+
+  <path d="M975 162 L975 220 L655 220 L655 260" class="line"/>
+  <text x="786" y="210" class="note">after 8 bits in current byte</text>
+
+  <path d="M655 332 L655 390 L630 390 L630 162" class="line"/>
+  <text x="674" y="384" class="note">more bits/bytes</text>
+
+  <path d="M720 296 L770 296" class="line"/>
+  <path d="M900 296 L950 296" class="line"/>
+  <path d="M1015 332 L1015 400 L1095 400" class="line"/>
+  <path d="M1040 430 L120 430 L120 162" class="line"/>
+  <text x="552" y="420" class="note">transaction complete -> return idle</text>
+</svg>

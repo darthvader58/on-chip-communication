@@ -101,57 +101,11 @@ The receiver uses:
 - ACK generation
 - delimiter and EOF checks
 
-## FSM and ASM Summary
+## FSM and ASM Chart
 
-Both CAN modules use explicit FSMs.
+The CAN transmitter and receiver both use explicit FSMs. The chart below captures the shared frame progression and the protocol-specific work that happens in the core and ACK phases.
 
-`can_tx.v` transmitter FSM:
-
-- `STATE_IDLE`
-  Wait for a transmit request.
-- `STATE_CORE`
-  Send the frame core from SOF through CRC, while inserting stuff bits and monitoring arbitration.
-- `STATE_ACK_SLOT`
-  Release the bus and sample for a dominant ACK.
-- `STATE_ACK_DELIM`
-  Transmit the ACK delimiter.
-- `STATE_EOF`
-  Transmit the `7` recessive EOF bits.
-- `STATE_IFS`
-  Wait through the `3` recessive intermission bits, then assert `done`.
-
-ASM-style flow for `can_tx.v`:
-
-```text
-IDLE -> CORE -> ACK_SLOT -> ACK_DELIM -> EOF -> IFS -> IDLE
-         |         |
-         |         +-- sample ACK from receiver
-         +-- insert stuff bits and check arbitration during identifier field
-```
-
-`can_rx.v` receiver FSM:
-
-- `STATE_IDLE`
-  Wait for SOF.
-- `STATE_CORE`
-  Sample and destuff the frame core, then check the received CRC.
-- `STATE_ACK_SLOT`
-  Drive dominant ACK if the frame is valid.
-- `STATE_ACK_DELIM`
-  Check recessive delimiter format.
-- `STATE_EOF`
-  Check the `7` EOF bits.
-- `STATE_IFS`
-  Check the `3` intermission bits and assert `data_valid` if the frame passed.
-
-ASM-style flow for `can_rx.v`:
-
-```text
-IDLE -> CORE -> ACK_SLOT -> ACK_DELIM -> EOF -> IFS -> IDLE
-         |         |
-         |         +-- drive ACK only for a valid frame
-         +-- remove stuff bits and validate CRC
-```
+![CAN FSM](can_fsm.svg)
 
 ## Testbench Notes
 

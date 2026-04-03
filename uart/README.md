@@ -64,49 +64,11 @@ The UART design uses explicit state-machine coding in the same style commonly us
 
 This keeps the code straightforward for Vivado synthesis and waveform debugging.
 
-## FSM and ASM Summary
+## FSM and ASM Chart
 
-Both UART modules use explicit FSMs.
+The UART transmitter and receiver both use the same four-state control pattern. The state chart below summarizes the flow used in `uart_tx.v` and `uart_rx.v`.
 
-`uart_tx.v` transmitter FSM:
-
-- `STATE_IDLE`
-  Wait for `start`, hold `tx = 1`.
-- `STATE_START`
-  Drive the start bit low for one bit period.
-- `STATE_DATA`
-  Shift out `8` data bits LSB first.
-- `STATE_STOP`
-  Drive the stop bit high for one bit period, then assert `done`.
-
-ASM-style flow for `uart_tx.v`:
-
-```text
-IDLE -> START -> DATA -> STOP -> IDLE
-         |         |
-         |         +-- repeat until 8 bits sent
-         +-- on start pulse
-```
-
-`uart_rx.v` receiver FSM:
-
-- `STATE_IDLE`
-  Wait for a low start bit on `rx`.
-- `STATE_START`
-  Confirm the start bit at the middle of the bit time.
-- `STATE_DATA`
-  Sample `8` data bits.
-- `STATE_STOP`
-  Wait one stop-bit time, move the byte to `data_out`, assert `data_valid`.
-
-ASM-style flow for `uart_rx.v`:
-
-```text
-IDLE -> START -> DATA -> STOP -> IDLE
-         |         |
-         |         +-- repeat until 8 bits sampled
-         +-- only continue if start bit is still valid
-```
+![UART FSM](uart_fsm.svg)
 
 ## Testbench Notes
 

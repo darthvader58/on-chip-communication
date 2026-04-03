@@ -80,52 +80,11 @@ The `inout` ports are coded in a synthesis-safe Verilog style:
 - drive low with `1'b0`
 - release the line with `1'bz`
 
-## FSM and ASM Summary
+## FSM and ASM Chart
 
-`i2c_master_write.v` uses an explicit FSM.
+`i2c_master_write.v` uses an explicit multi-state controller. The SVG below shows the write-transaction ASM flow from idle, through start generation, byte transfer, ACK sampling, and stop generation.
 
-States:
-
-- `STATE_IDLE`
-  Wait for `start`.
-- `STATE_START_A`
-  Bus idle setup before the start condition.
-- `STATE_START_B`
-  Pull SDA low while SCL is high to create START.
-- `STATE_BIT_SETUP`
-  Hold SCL low and drive the next data bit.
-- `STATE_BIT_HIGH`
-  Release SCL high so the bit is valid on the bus.
-- `STATE_BIT_LOW`
-  Complete the bit time and update counters.
-- `STATE_ACK_SETUP`
-  Release SDA for slave ACK.
-- `STATE_ACK_HIGH`
-  Raise SCL and sample the ACK bit.
-- `STATE_ACK_LOW`
-  Finish the ACK clock and decide whether more bytes remain.
-- `STATE_STOP_A`
-  Prepare for STOP with SDA low.
-- `STATE_STOP_B`
-  Release SCL high, then release SDA high.
-- `STATE_DONE`
-  Pulse `done` and return to idle.
-
-ASM-style flow:
-
-```text
-IDLE -> START_A -> START_B -> BIT_SETUP -> BIT_HIGH -> BIT_LOW
-                                          ^                     |
-                                          |                     |
-                                          +----- more bits -----+
-
-BIT_LOW -> ACK_SETUP -> ACK_HIGH -> ACK_LOW
-                                 |          |
-                                 |          +-- more bytes -> BIT_SETUP
-                                 +-- sample ACK
-
-ACK_LOW -> STOP_A -> STOP_B -> DONE -> IDLE
-```
+![I2C FSM](i2c_fsm.svg)
 
 ## Testbench Notes
 

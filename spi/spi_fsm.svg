@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="360" viewBox="0 0 940 360">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f2937"/>
+    </marker>
+    <style>
+      .title { font: 700 26px Arial, sans-serif; fill: #111827; }
+      .label { font: 600 16px Arial, sans-serif; fill: #111827; }
+      .body { font: 14px Arial, sans-serif; fill: #374151; }
+      .box { fill: #f8fafc; stroke: #059669; stroke-width: 2.5; rx: 18; ry: 18; }
+      .line { stroke: #1f2937; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #1f2937; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .note { font: 13px Arial, sans-serif; fill: #4b5563; }
+    </style>
+  </defs>
+
+  <text x="40" y="42" class="title">SPI Master Operational FSM</text>
+
+  <rect x="70" y="120" width="180" height="96" class="box"/>
+  <text x="128" y="152" class="label">IDLE</text>
+  <text x="116" y="178" class="body">CS high</text>
+  <text x="95" y="198" class="body">Wait for start pulse</text>
+
+  <rect x="380" y="120" width="180" height="96" class="box"/>
+  <text x="418" y="152" class="label">TRANSFER</text>
+  <text x="404" y="178" class="body">Toggle SCLK</text>
+  <text x="400" y="198" class="body">Shift MOSI / sample MISO</text>
+
+  <rect x="690" y="120" width="180" height="96" class="box"/>
+  <text x="746" y="152" class="label">DONE</text>
+  <text x="720" y="178" class="body">Release CS</text>
+  <text x="710" y="198" class="body">Pulse done and return</text>
+
+  <path d="M250 168 L380 168" class="line"/>
+  <text x="276" y="156" class="note">start</text>
+
+  <path d="M560 168 L690 168" class="line"/>
+  <text x="585" y="156" class="note">8 bits complete</text>
+
+  <path d="M780 216 L780 278 L160 278 L160 216" class="loop"/>
+  <text x="436" y="268" class="note">next request</text>
+
+  <path d="M470 216 L470 286 L470 216" class="loop"/>
+  <text x="488" y="286" class="note">repeat for each SPI bit</text>
+
+  <rect x="110" y="304" width="730" height="34" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.5" rx="12" ry="12"/>
+  <text x="128" y="326" class="body">The RTL uses counters instead of a named state register, but its control behavior matches this three-stage FSM.</text>
+</svg>

@@ -73,26 +73,11 @@ The code uses:
 - an edge counter for the serial clock
 - a clock-divider counter to derive the SPI bit rate from the 100 MHz input
 
-## FSM and ASM Summary
+## FSM and ASM Chart
 
-`spi_master.v` is implemented as a compact sequential controller rather than a separately named state machine. Functionally, it still behaves like a two-phase transfer FSM:
+`spi_master.v` is counter-driven instead of using an explicit `state` register, but its hardware behavior is still well described by the following operational FSM.
 
-- `IDLE`
-  Wait for `start`, load the transmit byte, drive `cs_n` low.
-- `TRANSFER`
-  Toggle `sclk`, shift out MOSI, sample MISO, count `8` bits.
-- `DONE`
-  Release `cs_n`, pulse `done`, return to idle behavior.
-
-ASM-style flow for `spi_master.v`:
-
-```text
-IDLE -> TRANSFER -> DONE -> IDLE
-          |
-          +-- repeat clock edges until 8 bits complete
-```
-
-So, while the source uses counters and conditional sequencing instead of a separate `state` register, the hardware operation is still naturally described with this ASM chart.
+![SPI FSM](spi_fsm.svg)
 
 ## Testbench Notes
 
