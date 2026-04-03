@@ -14,11 +14,15 @@ module can_top
     reg start_pulse;
     wire tx_busy;
     wire tx_done;
+    wire tx_ack_error;
+    wire arbitration_lost;
     wire [10:0] rx_id;
     wire [7:0]  rx_data;
     wire rx_valid;
     wire crc_error;
     wire stuff_error;
+    wire form_error;
+    wire ack_drive_low;
 
     can_tx
     #(
@@ -31,9 +35,12 @@ module can_top
         .start(start_pulse),
         .id_in(11'h123),
         .data_in(sw[7:0]),
+        .can_rx(can_rx),
         .can_tx(can_tx),
         .busy(tx_busy),
-        .done(tx_done)
+        .done(tx_done),
+        .ack_error(tx_ack_error),
+        .arbitration_lost(arbitration_lost)
     );
 
     can_rx
@@ -49,7 +56,9 @@ module can_top
         .data_out(rx_data),
         .data_valid(rx_valid),
         .crc_error(crc_error),
-        .stuff_error(stuff_error)
+        .stuff_error(stuff_error),
+        .form_error(form_error),
+        .ack_drive_low(ack_drive_low)
     );
 
     always @(posedge clk100) begin
@@ -62,8 +71,10 @@ module can_top
     assign led[8]     = rx_valid;
     assign led[9]     = tx_busy;
     assign led[10]    = tx_done;
-    assign led[11]    = crc_error;
-    assign led[12]    = stuff_error;
-    assign led[15:13] = rx_id[2:0];
+    assign led[11]    = tx_ack_error;
+    assign led[12]    = arbitration_lost;
+    assign led[13]    = crc_error;
+    assign led[14]    = stuff_error;
+    assign led[15]    = form_error;
 
 endmodule
